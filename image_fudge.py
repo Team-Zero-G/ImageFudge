@@ -1,5 +1,7 @@
 import math
-from random import random
+import ntpath
+import os
+from random import random, randrange
 from PIL import Image
 from PIL import ImageDraw
 
@@ -25,21 +27,26 @@ class Fudged(object):
         self.height = self.image.size[1]
 
 
-    def draw_relative_arcs(self, origin, endpoints):
+    def draw_relative_arcs(self, origin, endpoints, arclength):
         if isinstance(endpoints, self.Point):
             endpoints = [endpoints]
         for endpoint in endpoints:
             color = self.image.getpixel(endpoint)
-            angle = get_angle(origin, endpoint)
+            angle = self.get_angle(origin, endpoint)
             distance = self.get_distance(origin, endpoint)
             bounding_box = self.make_bounding_box(origin, distance)
-            arc = int(random()*360)
-            while arc == angle:
-                arc = int(random()*360)
+            try:
+                if arclength > 360: raise ValueError
+            except TypeError as e:
+                try:
+                    if arclength[0] > 360: raise ValueError
+                    if arclength[1] > 360: raise ValueError
+                    arclength = randrange(arclength[0], arclength[1])
+                except IndexError: raise e
 
             draw = ImageDraw.Draw(self.image).arc(bounding_box,
                                                   angle,
-                                                  arc,
+                                                  arclength,
                                                   color)
 
     def select_point(self):
@@ -56,15 +63,30 @@ class Fudged(object):
         for _ in range(point_number):
             yield self.select_point()
 
-    def center_random(self, point_number):
+
+    def center_random_random(self, point_number):
+        def rand_gen():
+            yield(int(random()*360))
+
         self.draw_relative_arcs(self.get_center(),
-                                self.random_points(point_number))
+                                self.random_points(point_number),
+                                rand_gen())
+
+
+    def center_random_fixed(self, point_number):
+        self.draw_relative_arcs(self.get_center(),
+                                self.random_points(point_number),
+                                int(random()*360))
+
+    def center_random_range(self, point_number):
+        self.draw_relative_arcs(self.get_center(),
+                                self.random_points(point_number),
+                                (20, 100))
 
     @staticmethod
     def make_bounding_box(origin, distance):
         return [(origin.x-distance, origin.y-distance),
                 (origin.x+distance, origin.y+distance)]
-
 
     @staticmethod
     def get_angle(origin, endpoint):
@@ -79,9 +101,51 @@ class Fudged(object):
         return math.floor(math.sqrt(math.pow(dx, 2) + math.pow(dy, 2)))
 
 
+def test_many_random(path, picture_num, num):
+    if os.path.isdir(path): raise Exception #TODO
+    file_path, extention = os.path.splitext(path)
+    file_name = ntpath.basename(path)
+    file_name = file_name[:-len(extention)]
+    test_dir = 'test/fudgeTest-{}'.format(num)
+
+    for i in range(picture_num):
+        bob1 = Fudged(path)
+        bob1.center_random_fixed(100)
+        bob1.center_random_range(100)
+        testpath1 = os.path.join(test_dir,
+                                '{}_all_t{}v{}{}'.format(file_name,
+                                                     num,
+                                                     i,
+                                                     extention))
+
+        bob2 = Fudged(path)
+        bob2.center_random_fixed(100)
+        testpath2 = os.path.join(test_dir,
+                                '{}_fixed_t{}v{}{}'.format(file_name,
+                                                     num,
+                                                     i,
+                                                     extention))
+
+        bob3 = Fudged(path)
+        bob3.center_random_range(100)
+        testpath3 = os.path.join(test_dir,
+                                '{}_range_t{}v{}{}'.format(file_name,
+                                                     num,
+                                                     i,
+                                                     extention))
+
+
+        try:
+            if i is 0: os.makedirs(test_dir)
+        except FileExistsError:
+            assert 0, "Please use different test number"
+
+        bob1.save(testpath1)
+        bob2.save(testpath2)
+        bob3.save(testpath3)
+
 
 if __name__ == '__main__':
     path = '../GodRoss.jpg'
-    bob = Fudged(path)
-    bob.center_random(100)
-    bob.save('../bobtest2.jpg')
+
+    test_many_random(path, 5, 3)
