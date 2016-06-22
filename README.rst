@@ -4,11 +4,14 @@ Image Fudge README
 
 Image Fudge is a mob-programmed image glitching library by willpatterson, konstantinfarrell and ssean1.
 
-# Install
+Install
+-------
 
-    make init
-    source .env/bin/activate
+:code:`make init`
 
-# Run
+:code:`source .env/bin/activate`
 
-    make
+Run
+---
+
+:code:`make`
