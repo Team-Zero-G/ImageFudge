@@ -1,7 +1,7 @@
 .PHONY: run install clean
 
 VENV_DIR ?= .env
-PYTHON = python
+PYTHON = $(VENV_DIR)/bin/python
 
 run:
 	clear
