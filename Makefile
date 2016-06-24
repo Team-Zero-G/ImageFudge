@@ -5,7 +5,7 @@ PYTHON = $(VENV_DIR)/bin/python
 
 run:
 	clear
-	$(PYTHON) image_fudge.py
+	$(PYTHON) imagefudge/image_fudge.py
 
 init:
 	rm -rf $(VENV_DIR)
