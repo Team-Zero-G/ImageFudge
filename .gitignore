@@ -1,6 +1,5 @@
 .env/
-.swp
+*.swp
 ImageFudge.egg-info/
 build/
 dist/
-.gitignore.swp
