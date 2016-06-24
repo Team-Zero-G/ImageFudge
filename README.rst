@@ -19,7 +19,7 @@ Examples from initial testing:
 
 **Multi-Origin:**
 
-.. image:: examples/testmultibob.jpg
+.. image:: examples/bobtestmulti.jpg
 
 Install
 -------
