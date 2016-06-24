@@ -83,6 +83,15 @@ class Fudged(object):
                                 self.random_points(point_number),
                                 (20, 100))
 
+    def multi_random_origin(self, origin_number, point_number):
+        for origin in self.random_points(origin_number):
+            self.draw_relative_arcs(origin,
+                                    self.random_points(point_number),
+                                    (20, 100))
+
+
+
+
     @staticmethod
     def make_bounding_box(origin, distance):
         return [(origin.x-distance, origin.y-distance),
@@ -144,8 +153,16 @@ def test_many_random(path, picture_num, num):
         bob2.save(testpath2)
         bob3.save(testpath3)
 
+def test_multi_origin(path, test_num):
+
+    #for i in range(test_num):
+    bob = Fudged(path)
+    bob.multi_random_origin(5, 60)
+    bob.save('../../../testmulitbob.jpg')
 
 if __name__ == '__main__':
-    path = '../GodRoss.jpg'
+    path = '../examples/GodRoss.jpg'
+    test_multi_origin(path, 4)
 
-    test_many_random(path, 5, 3)
+    #test_many_random(path, 5, 3)
+
