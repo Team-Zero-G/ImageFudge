@@ -6,6 +6,16 @@ Image Fudge is a mob-programmed image glitching library being developed by `will
 
 **Image Fudge is pre-release software**
 
+Example:
+
+**Before:**
+
+.. image:: examples/GodRoss.jpg
+
+**After:**
+
+.. image:: examples/bobtest1.jpg
+
 Install
 -------
 
