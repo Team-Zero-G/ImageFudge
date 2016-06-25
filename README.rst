@@ -37,8 +37,13 @@ Troubleshooting
 ---------------
 
 If there are issues installing pillow and you get an error like
-:code:`Error Message: ValueError: jpeg is required unless explicitly disabled using --disable-jpeg, aborting`
 
-Make sure you have ran the following
+::
 
-:code:`yum install gcc python-devel libjpeg-devel zlib-devel`
+    Error Message: ValueError: jpeg is required unless explicitly disabled using --disable-jpeg, aborting
+
+Make sure you have the following packages: (CentOS)
+
+:: 
+
+    gcc python-devel libjpeg-devel zlib-devel
