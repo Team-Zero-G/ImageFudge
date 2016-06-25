@@ -3,3 +3,7 @@
 ImageFudge.egg-info/
 build/
 dist/
+test/
+.DS_Store
+__pycache__/
+
