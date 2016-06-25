@@ -10,7 +10,6 @@ from collections import namedtuple
 class Fudged(object):
     """ """
     Point = namedtuple('Point', ['x', 'y'])
-    Dimention = namedtuple('Dimention', ['width', 'height'])
 
     def __init__(self, image):
         try:
