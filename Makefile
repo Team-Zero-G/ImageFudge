@@ -16,6 +16,12 @@ clean:
 	find . -iname "*.pyo" -delete
 	find . -iname "__pycache__" -delete
 
+test:
+	$(PYTHON) -m unittest discover
+
+travis-test:
+	python -m unittest discover
+
 $(VENV_DIR):
 	virtualenv $(VENV_DIR)
 	$(VENV_DIR)/bin/pip install -r requirements.txt
