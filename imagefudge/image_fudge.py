@@ -157,10 +157,10 @@ def test_multi_origin(path, test_num):
     #for i in range(test_num):
     bob = Fudged(path)
     bob.multi_random_origin(5, 60)
-    bob.save('../../../testmulitbob.jpg')
+    bob.save('examples/test_multibob.jpg')
 
 if __name__ == '__main__':
-    path = '../examples/GodRoss.jpg'
+    path = 'examples/GodRoss.jpg'
     test_multi_origin(path, 4)
 
     #test_many_random(path, 5, 3)
