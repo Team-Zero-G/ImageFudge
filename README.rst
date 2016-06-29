@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/willpatterson/ImageFudge.svg?branch=master
+    :target: https://travis-ci.org/willpatterson/ImageFudge
+
 ******************
 Image Fudge README
 ******************
@@ -44,6 +47,6 @@ If there are issues installing pillow and you get an error like
 
 Make sure you have the following packages: (CentOS)
 
-:: 
+::
 
     gcc python-devel libjpeg-devel zlib-devel
