@@ -89,7 +89,7 @@ class Fudged(object):
                                     self.random_points(point_number),
                                     (20, 100))
 
-
+    #def calculate_relative_point(self, relative_point):
 
 
     @staticmethod
