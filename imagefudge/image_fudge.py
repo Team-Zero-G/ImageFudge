@@ -26,26 +26,27 @@ class Fudged(object):
         self.height = self.image.size[1]
 
 
-    def draw_relative_arcs(self, origin, endpoints, arclength):
+    def draw_relative_arcs(self, origin, endpoints, arclen):
         if isinstance(endpoints, self.Point):
             endpoints = [endpoints]
         for endpoint in endpoints:
             color = self.image.getpixel(endpoint)
-            angle = self.get_angle(origin, endpoint)
             distance = self.get_distance(origin, endpoint)
             bounding_box = self.make_bounding_box(origin, distance)
+            angle = self.get_angle(origin, endpoint)
             try:
-                if arclength > 360: raise ValueError
+                if arclen > 360 and arclen < -360: raise ValueError
             except TypeError as e:
                 try:
-                    if arclength[0] > 360: raise ValueError
-                    if arclength[1] > 360: raise ValueError
-                    arclength = randrange(arclength[0], arclength[1])
+                    if arclen[0] > 360 and arclen < -360: raise ValueError
+                    if arclen[1] > 360 and arclen < -360: raise ValueError
+                    arclen = randrange(arclen[0], arclen[1])
                 except IndexError: raise e
 
+            end_angle = angle + arclen
             draw = ImageDraw.Draw(self.image).arc(bounding_box,
                                                   angle,
-                                                  arclength,
+                                                  end_angle,
                                                   color)
 
     def select_point(self):
@@ -165,3 +166,4 @@ if __name__ == '__main__':
 
     #test_many_random(path, 5, 3)
 
+    
