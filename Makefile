@@ -15,6 +15,7 @@ clean:
 	find . -iname "*.pyc" -delete
 	find . -iname "*.pyo" -delete
 	find . -iname "__pycache__" -delete
+	rm -rf ImageFudge.egg-info
 
 test:
 	$(PYTHON) -m unittest discover
