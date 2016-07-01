@@ -1,7 +1,9 @@
 import unittest
+
 from imagefudge.image_fudge import Fudged
 
 TEST_IMAGE = 'examples/GodRoss.jpg'
+
 
 class TestFudged(unittest.TestCase):
     """
@@ -44,7 +46,5 @@ class TestFudged(unittest.TestCase):
             self.assertPointInImage(point, self.fudge)
 
 
-
 if __name__ == "__main__":
     unittest.main()
-
