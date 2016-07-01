@@ -15,8 +15,14 @@ def description():
 def test_main(args):
     """ """
     parser = argparse.ArgumentParser(description=description())
-    parser.add_argument('-f', '--image_file', default='../examples/GodRoss.jpg', type=str, help='The file path of the image to test')
-    parser.add_argument('test_name', type=str, help='The name of the test to perform')
+    parser.add_argument('-f',
+                        '--image_file',
+                        default='../examples/GodRoss.jpg',
+                        type=str,
+                        help='The file path of the image to test')
+    parser.add_argument('test_name',
+                        type=str,
+                        help='The name of the test to perform')
 
     args = parser.parse_args(args)
 
