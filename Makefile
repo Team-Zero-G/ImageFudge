@@ -31,4 +31,6 @@ travis-test:
 
 $(VENV_DIR):
 	virtualenv $(VENV_DIR)
+	$(VENV_DIR)/bin/pip install --upgrade pip
+	$(VENV_DIR)/bin/pip install --upgrade setuptools
 	$(VENV_DIR)/bin/pip install -r requirements.txt
