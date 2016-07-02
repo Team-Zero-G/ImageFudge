@@ -15,7 +15,13 @@ clean:
 	find . -iname "*.pyc" -delete
 	find . -iname "*.pyo" -delete
 	find . -iname "__pycache__" -delete
-	rm -rf ImageFudge.egg-info
+	-rm -rf ImageFudge.egg-info
+
+install-clean:
+	-rm -rf $(VENV_DIR)
+	-rm -rf ImageFudge.egg-info
+	-rm -rf dist
+	-rm -rf build
 
 test:
 	$(PYTHON) -m unittest discover
