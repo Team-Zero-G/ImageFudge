@@ -6,6 +6,5 @@ dist/
 test/
 .DS_Store
 __pycache__/
-examples/
 
 htdocs/static/img/*
