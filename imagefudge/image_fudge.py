@@ -10,7 +10,7 @@ from imagefudge.utils import FudgeUtils
 
 
 class Fudged(FudgeUtils):
-    """ """
+    """ API Class for Image Fudge """
 
     def draw_relative_arcs(self, origin, endpoints, arclen):
         """ Draws an arc of length arclen.
@@ -84,5 +84,3 @@ if __name__ == '__main__':
 
     path = 'htdocs/static/img/mt_hood_original.jpg'
     test_multi_origin(path, 4)
-
-    #test_many_random(path, 5, 3)
