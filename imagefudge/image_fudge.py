@@ -7,11 +7,15 @@ from PIL import ImageDraw
 
 from collections import namedtuple
 
+
+SCALE = 2
+
 class Fudged(object):
     """ """
     Point = namedtuple('Point', ['x', 'y'])
 
     def __init__(self, image):
+
         try:
             self.image = Image.open(image)
         except TypeError as e:
@@ -22,11 +26,21 @@ class Fudged(object):
             except AttributeError:
                 raise e
 
-        self.width = self.image.size[0]
-        self.height = self.image.size[1]
+        self.width = self.image.size[0]*SCALE
+        self.height = self.image.size[1]*SCALE
+        self.image = self.image.resize((self.width, self.height))
+        print(self.image.size)
+        #import pdb; pdb.set_trace()
+        # self.save('htdocs/static/img/preview.jpg')
+        # raise Exception
 
+    def anti_alias(self):
+        """ Apply anti-alias fudged image """
+
+        raise NotImplementedError
 
     def draw_relative_arcs(self, origin, endpoints, arclen):
+
         if isinstance(endpoints, self.Point):
             endpoints = [endpoints]
         for endpoint in endpoints:
@@ -50,121 +64,80 @@ class Fudged(object):
                                                   color)
 
     def select_point(self):
+
         return self.Point(int(random()*self.width),
                           int(random()*self.height))
 
     def get_center(self):
+
         return self.Point(x=self.width/2, y=self.height/2)
 
     def save(self, path):
+
+        self.image.thumbnail((self.width//SCALE, self.height//SCALE),
+                             Image.ANTIALIAS)
         self.image.save(path)
 
     def random_points(self, point_number):
+
         for _ in range(point_number):
             yield self.select_point()
 
+    def draw_arcs_custom_origin(self, point_number, arc_len, origin):
 
-    def center_random_random(self, point_number):
-        def rand_gen():
-            yield(int(random()*360))
+        self.draw_relative_arcs(origin,
+                                self.random_points(point_number),
+                                arc_len)
+
+    def draw_arcs_center_origin(self, point_number, arc_len):
 
         self.draw_relative_arcs(self.get_center(),
                                 self.random_points(point_number),
-                                rand_gen())
+                                arc_len)
 
+    def draw_arcs_multi_origin(self, origin_number, point_number, arc_len):
 
-    def center_random_fixed(self, point_number):
-        self.draw_relative_arcs(self.get_center(),
-                                self.random_points(point_number),
-                                int(random()*360))
-
-    def center_random_range(self, point_number):
-        self.draw_relative_arcs(self.get_center(),
-                                self.random_points(point_number),
-                                (20, 100))
-
-    def multi_random_origin(self, origin_number, point_number):
         for origin in self.random_points(origin_number):
             self.draw_relative_arcs(origin,
                                     self.random_points(point_number),
-                                    (20, 100))
+                                    arc_len)
 
     #def calculate_relative_point(self, relative_point):
 
 
     @staticmethod
     def make_bounding_box(origin, distance):
+
         return [(origin.x-distance, origin.y-distance),
                 (origin.x+distance, origin.y+distance)]
 
     @staticmethod
     def get_angle(origin, endpoint):
+
         dx = endpoint.x - origin.x
         dy = endpoint.y - origin.y
         return math.degrees(math.atan2(dy, dx))
 
     @staticmethod
     def get_distance(origin, endpoint):
+
         dx = endpoint.x - origin.x
         dy = endpoint.y - origin.y
         return math.floor(math.sqrt(math.pow(dx, 2) + math.pow(dy, 2)))
 
 
-def test_many_random(path, picture_num, num):
-    if os.path.isdir(path): raise Exception #TODO
-    file_path, extention = os.path.splitext(path)
-    file_name = ntpath.basename(path)
-    file_name = file_name[:-len(extention)]
-    test_dir = 'test/fudgeTest-{}'.format(num)
-
-    for i in range(picture_num):
-        bob1 = Fudged(path)
-        bob1.center_random_fixed(100)
-        bob1.center_random_range(100)
-        testpath1 = os.path.join(test_dir,
-                                '{}_all_t{}v{}{}'.format(file_name,
-                                                     num,
-                                                     i,
-                                                     extention))
-
-        bob2 = Fudged(path)
-        bob2.center_random_fixed(100)
-        testpath2 = os.path.join(test_dir,
-                                '{}_fixed_t{}v{}{}'.format(file_name,
-                                                     num,
-                                                     i,
-                                                     extention))
-
-        bob3 = Fudged(path)
-        bob3.center_random_range(100)
-        testpath3 = os.path.join(test_dir,
-                                '{}_range_t{}v{}{}'.format(file_name,
-                                                     num,
-                                                     i,
-                                                     extention))
-
-
-        try:
-            if i is 0: os.makedirs(test_dir)
-        except FileExistsError:
-            assert 0, "Please use different test number"
-
-        bob1.save(testpath1)
-        bob2.save(testpath2)
-        bob3.save(testpath3)
-
 def test_multi_origin(path, test_num):
 
     #for i in range(test_num):
     bob = Fudged(path)
-    bob.multi_random_origin(5, 60)
-    bob.save('htdocs/static/img/current_test.jpg')
+    bob.draw_arcs_multi_origin(5, 500, (10, 20))
+    #bob.draw_arcs_custom_origin(1000, (10, 30), bob.Point(bob.get_center()[0], bob.height//3))
+    bob.save('htdocs/static/img/preview.jpg')
 
 
 if __name__ == '__main__':
-    path = 'examples/GodRoss.jpg'
+
+    path = 'htdocs/static/img/mt_hood_original.jpg'
     test_multi_origin(path, 4)
 
     #test_many_random(path, 5, 3)
-
-    
