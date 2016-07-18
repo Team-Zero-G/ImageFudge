@@ -1,4 +1,4 @@
-.PHONY: run install clean
+.PHONY: run install clean test
 
 VENV_DIR ?= .env
 PYTHON = $(VENV_DIR)/bin/python
