@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+    ServerName imagefudge.local
+    # so wildcard DNS for any IP works (see xip.io or nip.io)
+    ServerAlias 0.0.0.0.*
+
+    DocumentRoot /path/to/ImageFudge/htdocs
+    ErrorLog /var/log/httpd/imagefudge.local.error_log
+    CustomLog /var/log/httpd/imagefudge.local.access_log vhost
+
+    <Directory /path/to/ImageFudge/htdocs>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
