@@ -13,6 +13,18 @@ class Fudged(FudgeUtils):
     """ """
 
     def draw_relative_arcs(self, origin, endpoints, arclen):
+        """ Draws an arc of length arclen.
+
+        For each endpoint, gets the color at endpoint,
+        computes the distance from origin to endpoint,
+        and creates a bounding box that would encapsulate
+        a circle of the radius described by distance.
+
+        Next, the start and finish angles needed to create
+        an arc of length arclen are computed.
+
+        Finally the arc is drawn on the image.
+        """
 
         if isinstance(endpoints, self.Point):
             endpoints = [endpoints]
@@ -31,6 +43,8 @@ class Fudged(FudgeUtils):
                 except IndexError: raise e
 
             end_angle = angle + arclen
+            # TODO: Draw arc on a separate layer.
+            # TODO: Give arc thickness.
             draw = ImageDraw.Draw(self.image).arc(bounding_box,
                                                   angle,
                                                   end_angle,
@@ -82,10 +96,8 @@ class Fudged(FudgeUtils):
 
 def test_multi_origin(path, test_num):
 
-    #for i in range(test_num):
     bob = Fudged(path)
     bob.draw_arcs_multi_origin(100, 1000, (10, 20))
-    #bob.draw_arcs_custom_origin(1000, (10, 30), bob.Point(bob.get_center()[0], bob.height//3))
     bob.save('htdocs/static/img/preview.jpg')
 
 
