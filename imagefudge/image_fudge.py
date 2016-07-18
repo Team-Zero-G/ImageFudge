@@ -8,13 +8,11 @@ from PIL import ImageDraw
 from collections import namedtuple
 
 
-SCALE = 2
-
 class Fudged(object):
     """ """
     Point = namedtuple('Point', ['x', 'y'])
 
-    def __init__(self, image):
+    def __init__(self, image, scale=2):
 
         try:
             self.image = Image.open(image)
@@ -26,18 +24,11 @@ class Fudged(object):
             except AttributeError:
                 raise e
 
-        self.width = self.image.size[0]*SCALE
-        self.height = self.image.size[1]*SCALE
+        self.scale = scale
+        self.width = self.image.size[0]*self.scale
+        self.height = self.image.size[1]*self.scale
         self.image = self.image.resize((self.width, self.height))
-        print(self.image.size)
-        #import pdb; pdb.set_trace()
-        # self.save('htdocs/static/img/preview.jpg')
-        # raise Exception
 
-    def anti_alias(self):
-        """ Apply anti-alias fudged image """
-
-        raise NotImplementedError
 
     def draw_relative_arcs(self, origin, endpoints, arclen):
 
@@ -74,7 +65,7 @@ class Fudged(object):
 
     def save(self, path):
 
-        self.image.thumbnail((self.width//SCALE, self.height//SCALE),
+        self.image.thumbnail((self.width//self.scale, self.height//self.scale),
                              Image.ANTIALIAS)
         self.image.save(path)
 
@@ -130,7 +121,7 @@ def test_multi_origin(path, test_num):
 
     #for i in range(test_num):
     bob = Fudged(path)
-    bob.draw_arcs_multi_origin(5, 500, (10, 20))
+    bob.draw_arcs_multi_origin(100, 1000, (10, 20))
     #bob.draw_arcs_custom_origin(1000, (10, 30), bob.Point(bob.get_center()[0], bob.height//3))
     bob.save('htdocs/static/img/preview.jpg')
 
