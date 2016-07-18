@@ -40,8 +40,8 @@ class FudgeUtils(object):
 
     def save(self, path):
 
-        self.image.thumbnail((self.width//self.scale, self.height//self.scale),
-                             Image.ANTIALIAS)
+        self.image = self.image.resize((self.width//self.scale, self.height//self.scale),
+                                       Image.ANTIALIAS)
         self.image.save(path)
 
     def random_points(self, point_number):
