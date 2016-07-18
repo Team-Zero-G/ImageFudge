@@ -12,17 +12,11 @@ Image Fudge is a mob-programmed image glitching library being developed by `will
 Examples from initial testing:
 ------------------------------
 
-**Before:**
+.. image:: examples/mt_hood_mellow_center.jpg
 
-.. image:: examples/GodRoss.jpg
+.. image:: examples/mt_hood_fuzz.jpg
 
-**Center-Origin:**
-
-.. image:: examples/bobtest1.jpg
-
-**Multi-Origin:**
-
-.. image:: examples/bobtestmulti.jpg
+.. image:: examples/modern_art.jpg
 
 Install
 -------
