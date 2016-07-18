@@ -48,3 +48,23 @@ class FudgeUtils(object):
 
         for _ in range(point_number):
             yield self.select_point()
+
+    @staticmethod
+    def make_bounding_box(origin, distance):
+
+        return [(origin.x-distance, origin.y-distance),
+                (origin.x+distance, origin.y+distance)]
+
+    @staticmethod
+    def get_angle(origin, endpoint):
+
+        dx = endpoint.x - origin.x
+        dy = endpoint.y - origin.y
+        return math.degrees(math.atan2(dy, dx))
+
+    @staticmethod
+    def get_distance(origin, endpoint):
+
+        dx = endpoint.x - origin.x
+        dy = endpoint.y - origin.y
+        return math.floor(math.sqrt(math.pow(dx, 2) + math.pow(dy, 2)))
