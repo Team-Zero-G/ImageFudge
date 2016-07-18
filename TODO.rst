@@ -5,6 +5,7 @@ TODOs
 * Tests
 * toveralls badge
 * finish/extend command line interface
+* make anti aliasing a dectorator
 
 New Effects
 -----------
