@@ -2,17 +2,20 @@
 TODOs
 *****
 
-* Antialiasing for arcs and lines
-* web interface for viewing test images
-* tests
-* coveralls badge
+* Tests
+* toveralls badge
 * finish/extend command line interface
 
 New Effects
 -----------
 
 * extend arc-drawing
-* Pixel sorting
-* 'Drag-lag' effect
+* pixel sorting
+* 'drag-lag' effect
 * 'checkerboard' effect
 
+Done
+----
+
+* antialiasing for arcs and lines
+* web interface for viewing test images
