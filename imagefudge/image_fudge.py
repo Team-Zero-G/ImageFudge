@@ -15,7 +15,7 @@ from imagefudge.utils import FudgeUtils
 class Fudged(FudgeUtils):
     """ API Class for Image Fudge """
 
-    def draw_relative_arcs(self, origin, endpoints, arclen):
+    def draw_relative_arcs(self, origins, endpoints, arclen):
         """ Draws an arc of length arclen.
 
         For each endpoint, gets the color at endpoint,
@@ -31,30 +31,35 @@ class Fudged(FudgeUtils):
 
         if isinstance(endpoints, self.Point):
             endpoints = [endpoints]
-        for endpoint in endpoints:
-            color = self.image.getpixel(endpoint)
-            distance = self.get_distance(origin, endpoint)
-            bounding_box = self.make_bounding_box(origin, distance)
-            angle = self.get_angle(origin, endpoint)
-            try:
-                if arclen > 360 and arclen < -360:
-                    raise ValueError('arclen must be between -360 and 360')
-            except TypeError as te:
-                try:
-                    if arclen[0] > 360 and arclen < -360 or\
-                       arclen[1] > 360 and arclen < -360:
-                        raise ValueError('arclen must be between -360 and 360')
-                    arclen = randrange(arclen[0], arclen[1])
-                except IndexError: raise te(('arclen must be either a numeric'
-                                             ' value or subscriptable range'))
+        if isinstance(origins, self.Point):
+            origins = [origins]
 
-            end_angle = angle + arclen
-            # TODO: Draw arc on a separate layer.
-            # TODO: Give arc thickness.
-            draw = ImageDraw.Draw(self.image).arc(bounding_box,
-                                                  angle,
-                                                  end_angle,
-                                                  color)
+        for origin in origins:
+            print(origin)
+            for endpoint in endpoints:
+                color = self.image.getpixel(endpoint)
+                distance = self.get_distance(origin, endpoint)
+                bounding_box = self.make_bounding_box(origin, distance)
+                angle = self.get_angle(origin, endpoint)
+                try:
+                    if arclen > 360 and arclen < -360:
+                        raise ValueError('arclen must be between -360 and 360')
+                except TypeError as te:
+                    try:
+                        if arclen[0] > 360 and arclen < -360 or\
+                           arclen[1] > 360 and arclen < -360:
+                            raise ValueError('arclen must be between -360 and 360')
+                        arclen = randrange(arclen[0], arclen[1])
+                    except IndexError: raise te(('arclen must be either a numeric'
+                                                 ' value or subscriptable range'))
+
+                end_angle = angle + arclen
+                # TODO: Draw arc on a separate layer.
+                # TODO: Give arc thickness.
+                ImageDraw.Draw(self.image).arc(bounding_box,
+                                                      angle,
+                                                      end_angle,
+                                                      color)
 
 
     def draw_arcs_custom_origin(self, point_number, arc_len, origin):
@@ -79,14 +84,13 @@ class Fudged(FudgeUtils):
     #def calculate_relative_point(self, relative_point):
 
 
-def test_multi_origin(path, test_num):
-
-    bob = Fudged(path)
-    bob.draw_arcs_multi_origin(100, 1000, (10, 20))
-    bob.save('htdocs/static/img/preview.jpg')
-
-
 if __name__ == '__main__':
 
-    path = 'htdocs/static/img/mt_hood_original.jpg'
-    test_multi_origin(path, 4)
+    img_path = 'htdocs/static/img/portland.jpg'
+    save_path = 'htdocs/static/img/preview.jpg'
+    bob = Fudged(img_path)
+    random_endpoints = [x for x in bob.random_points(100)]
+    bob.draw_relative_arcs(bob.random_points(10),
+                           random_endpoints,
+                           (5, 10))
+    bob.save(save_path)
