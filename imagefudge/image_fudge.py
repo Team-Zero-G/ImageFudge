@@ -34,13 +34,16 @@ class Fudged(FudgeUtils):
             bounding_box = self.make_bounding_box(origin, distance)
             angle = self.get_angle(origin, endpoint)
             try:
-                if arclen > 360 and arclen < -360: raise ValueError
-            except TypeError as e:
+                if arclen > 360 and arclen < -360:
+                    raise ValueError('arclen must be between -360 and 360')
+            except TypeError as te:
                 try:
-                    if arclen[0] > 360 and arclen < -360: raise ValueError
-                    if arclen[1] > 360 and arclen < -360: raise ValueError
+                    if arclen[0] > 360 and arclen < -360 or\
+                       arclen[1] > 360 and arclen < -360:
+                        raise ValueError('arclen must be between -360 and 360')
                     arclen = randrange(arclen[0], arclen[1])
-                except IndexError: raise e
+                except IndexError: raise te(('arclen must be either a numeric'
+                                             'value or subscriptable range'))
 
             end_angle = angle + arclen
             # TODO: Draw arc on a separate layer.
