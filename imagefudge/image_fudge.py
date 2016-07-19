@@ -1,11 +1,14 @@
 import math
 import ntpath
-import os
+from collections import namedtuple
 from random import random, randrange
 from PIL import Image
 from PIL import ImageDraw
 
-from collections import namedtuple
+import os
+import sys
+
+sys.path.append(os.path.abspath('.'))
 from imagefudge.utils import FudgeUtils
 
 
