@@ -43,7 +43,7 @@ class Fudged(FudgeUtils):
                         raise ValueError('arclen must be between -360 and 360')
                     arclen = randrange(arclen[0], arclen[1])
                 except IndexError: raise te(('arclen must be either a numeric'
-                                             'value or subscriptable range'))
+                                             ' value or subscriptable range'))
 
             end_angle = angle + arclen
             # TODO: Draw arc on a separate layer.
