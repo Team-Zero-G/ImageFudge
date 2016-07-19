@@ -18,6 +18,14 @@ Examples from initial testing:
 
 .. image:: examples/modern_art.jpg
 
+.. image:: examples/multi_arc_point_portland.jpg
+
+.. image:: examples/portland_blurrr.jpg
+
+.. image:: examples/modern_art2.jpg
+
+.. image:: examples/many_circles.jpg
+
 Install
 -------
 
