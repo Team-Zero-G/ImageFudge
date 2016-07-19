@@ -93,9 +93,9 @@ if __name__ == '__main__':
 
     img_path = 'htdocs/static/img/portland.jpg'
     save_path = 'htdocs/static/img/preview.jpg'
-    bob = Fudged(img_path)
-    random_endpoints = [x for x in bob.random_points(100)]
-    bob.draw_relative_arcs(bob.random_points(10),
+    bob = Fudged(img_path, scale=3)
+    random_endpoints = [x for x in bob.random_points(100000)]
+    bob.draw_relative_arcs(bob.random_points(20),
                            random_endpoints,
-                           (5, 10))
+                           (2, 6))
     bob.save(save_path)
