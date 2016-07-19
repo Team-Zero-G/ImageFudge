@@ -27,6 +27,11 @@ class Fudged(FudgeUtils):
         an arc of length arclen are computed.
 
         Finally the arc is drawn on the image.
+
+        TODO:
+            Draw arc on a separate layer.
+            Give arc thickness.
+            provide support for true negative arclen
         """
 
         if isinstance(endpoints, self.Point):
@@ -48,14 +53,14 @@ class Fudged(FudgeUtils):
                     try:
                         if arclen[0] > 360 and arclen < -360 or\
                            arclen[1] > 360 and arclen < -360:
-                            raise ValueError('arclen must be between -360 and 360')
+                            raise ValueError(('arclen must be between'
+                                              ' -360 and 360'))
                         arclen = randrange(arclen[0], arclen[1])
-                    except IndexError: raise te(('arclen must be either a numeric'
-                                                 ' value or subscriptable range'))
+                    except IndexError: raise te(('arclen must be either '
+                                                 'a numeric value or '
+                                                 'subscriptable range'))
 
                 end_angle = angle + arclen
-                # TODO: Draw arc on a separate layer.
-                # TODO: Give arc thickness.
                 ImageDraw.Draw(self.image).arc(bounding_box,
                                                       angle,
                                                       end_angle,
