@@ -2,10 +2,11 @@
 TODOs
 *****
 
-* Tests
-* toveralls badge
+* tests
+* coveralls badge
 * finish/extend command line interface
 * make anti aliasing a dectorator
+* documentation
 
 New Effects
 -----------
