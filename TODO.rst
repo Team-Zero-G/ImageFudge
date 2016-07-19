@@ -5,8 +5,9 @@ TODOs
 * tests
 * coveralls badge
 * finish/extend command line interface
-* make anti aliasing a dectorator
+* make anti-aliasing a dectorator
 * documentation
+* gif maker
 
 New Effects
 -----------
