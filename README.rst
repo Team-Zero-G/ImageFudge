@@ -22,6 +22,8 @@ Examples from initial testing:
 
 .. image:: examples/portland_blurrr.jpg
 
+.. image:: examples/portland_blocks.jpg
+
 .. image:: examples/modern_art2.jpg
 
 .. image:: examples/many_circles.jpg
