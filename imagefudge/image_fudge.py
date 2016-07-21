@@ -34,33 +34,41 @@ class Fudged(FudgeUtils):
             provide support for true negative arclen
         """
 
+        try:
+            if arclen > 360 and arclen < -360:
+                raise ValueError('arclen must be between -360 and 360')
+            arclen_is_range = False
+        except TypeError as te:
+            try:
+                if arclen[0] > 360 and arclen < -360 or\
+                   arclen[1] > 360 and arclen < -360:
+                    raise ValueError(('arclen must be between'
+                                      ' -360 and 360'))
+                arclen_is_range = True
+                start = arclen[0]
+                stop = arclen[1]
+            except IndexError: raise te(('arclen must be either '
+                                         'a numeric value or '
+                                         'subscriptable range'))
+
         if isinstance(endpoints, self.Point):
-            endpoints = [endpoints]
+            endpoints = list(endpoints)
+
         if isinstance(origins, self.Point):
-            origins = [origins]
+            origins = list(origins)
 
         for origin in origins:
             print(origin)
+
             for endpoint in endpoints:
                 color = self.image.getpixel(endpoint)
                 distance = self.get_distance(origin, endpoint)
                 bounding_box = self.make_bounding_box(origin, distance)
                 angle = self.get_angle(origin, endpoint)
-                try:
-                    if arclen > 360 and arclen < -360:
-                        raise ValueError('arclen must be between -360 and 360')
-                except TypeError as te:
-                    try:
-                        if arclen[0] > 360 and arclen < -360 or\
-                           arclen[1] > 360 and arclen < -360:
-                            raise ValueError(('arclen must be between'
-                                              ' -360 and 360'))
-                        arclen = randrange(arclen[0], arclen[1])
-                    except IndexError: raise te(('arclen must be either '
-                                                 'a numeric value or '
-                                                 'subscriptable range'))
-
+                if arclen_is_range:
+                    arclen = randrange(start, stop)
                 end_angle = angle + arclen
+
                 ImageDraw.Draw(self.image).arc(bounding_box,
                                                       angle,
                                                       end_angle,
@@ -95,7 +103,5 @@ if __name__ == '__main__':
     save_path = 'htdocs/static/img/preview.jpg'
     bob = Fudged(img_path, scale=3)
     random_endpoints = [x for x in bob.random_points(100000)]
-    bob.draw_relative_arcs(bob.random_points(20),
-                           random_endpoints,
-                           (2, 6))
+    bob.draw_relative_arcs(bob.random_points(200), random_endpoints, (2, 6))
     bob.save(save_path)
