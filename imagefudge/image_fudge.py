@@ -29,9 +29,9 @@ class Fudged(FudgeUtils):
         Finally the arc is drawn on the image.
 
         TODO:
+            provide support for drawing arcs counter clockwise (- arclen)
             Draw arc on a separate layer.
             Give arc thickness.
-            provide support for true negative arclen
         """
         if isinstance(endpoints, self.Point):
             endpoints = list(endpoints)
@@ -63,7 +63,6 @@ class Fudged(FudgeUtils):
                                                    angle,
                                                    end_angle,
                                                    color)
-
 
     def draw_arcs_custom_origin(self, point_number, arc_len, origin):
 
