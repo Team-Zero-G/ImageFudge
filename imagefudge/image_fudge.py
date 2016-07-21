@@ -46,7 +46,7 @@ class Fudged(FudgeUtils):
             origins = list(origins)
 
         for count, origin in enumerate(origins):
-            print('Origin #: '.format(count))
+            print('Origin #: {}'.format(count))
             for endpoint in endpoints:
                 color = self.image.getpixel(endpoint)
                 distance = self.get_distance(origin, endpoint)
@@ -71,33 +71,23 @@ class Fudged(FudgeUtils):
                                                    end_angle,
                                                    color)
 
-    def draw_arcs_custom_origin(self, point_number, arc_len, origin):
-
-        self.draw_relative_arcs(origin,
-                                self.random_points(point_number),
-                                arc_len)
-
-    def draw_arcs_center_origin(self, point_number, arc_len):
-
-        self.draw_relative_arcs(self.get_center(),
-                                self.random_points(point_number),
-                                arc_len)
-
-    def draw_arcs_multi_origin(self, origin_number, point_number, arc_len):
-
-        for origin in self.random_points(origin_number):
-            self.draw_relative_arcs(origin,
-                                    self.random_points(point_number),
-                                    arc_len)
-
-    #def calculate_relative_point(self, relative_point):
-
+class FudgeMaker(Fudged):
+    """ """
+    def fuzzy(self, magnitude):
+        self.scale = 3
+        point_number = int(magnitude)%10*10000
+        origin_number = int(magnitude)%10*10+10
+        print('Point Number: {}'.format(point_number))
+        print('Origin Number: {}'.format(origin_number))
+        random_endpoints = {x for x in self.random_points(point_number)}
+        self.draw_relative_arcs(self.random_points(origin_number),
+                                random_endpoints,
+                                {1,2})
 
 if __name__ == '__main__':
 
     img_path = 'htdocs/static/img/maxresdefault.jpg'
     save_path = 'htdocs/static/img/preview.jpg'
-    bob = Fudged(img_path, scale=3)
-    random_endpoints = [x for x in bob.random_points(10000)]
-    bob.draw_relative_arcs(bob.random_points(100), random_endpoints, {1,2})
-    bob.save(save_path)
+    fm = FudgeMaker(img_path)
+    fm.fuzzy(9)
+    fm.save(save_path)
