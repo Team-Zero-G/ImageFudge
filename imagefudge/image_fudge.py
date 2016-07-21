@@ -17,8 +17,15 @@ class Fudged(FudgeUtils):
 
     def draw_relative_arcs(self, origins, endpoints, arclen):
         """ Draws an arc of length arclen.
+        INPUTS:
+            origins:   Iterable of Point Tuples OR Single Point named tuple
+            endpoints: Iterable of Point Tuples OR Single Point named tuple
+            arclen:    Iterable of length of at least 2 items containing
+                       numeric values OR single numeric value
+        OUTPUT:
+            Edits Image object
 
-        For each endpoint, gets the color at endpoint,
+        For each endpoint for every origin, gets the color at endpoint,
         computes the distance from origin to endpoint,
         and creates a bounding box that would encapsulate
         a circle of the radius described by distance.
@@ -55,9 +62,9 @@ class Fudged(FudgeUtils):
                     except (TypeError,
                             ValueError,
                             AttributeError,
-                            StopIteration) as te:
-                        raise TypeError(('arclen must be either a numeric '
-                                         'value or subscriptable range'))
+                            StopIteration) as e:
+                        raise e(('arclen must be either a numeric '
+                                 'value or subscriptable range'))
                 finally:
                     ImageDraw.Draw(self.image).arc(bounding_box,
                                                    angle,
