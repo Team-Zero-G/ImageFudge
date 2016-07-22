@@ -56,9 +56,9 @@ class Fudged(FudgeUtils):
                     end_angle = angle + int(arclen)
                 except (TypeError, ValueError):
                     try:
-                        r_iter = arclen.__iter__().__next__
-                        end_angle = angle + randrange(int(r_iter()),
-                                                      int(r_iter()))
+                        arclen_iter = arclen.__iter__()
+                        end_angle = angle + randrange(int(next(arclen_iter)),
+                                                      int(next(arclen_iter)))
                     except (TypeError,
                             ValueError,
                             AttributeError,
@@ -86,7 +86,7 @@ class FudgeMaker(Fudged):
 
 if __name__ == '__main__':
 
-    img_path = 'htdocs/static/img/maxresdefault.jpg'
+    img_path = 'htdocs/static/img/portland.jpg'
     save_path = 'htdocs/static/img/preview.jpg'
     fm = FudgeMaker(img_path)
     fm.fuzzy(9)
