@@ -5,7 +5,6 @@ TODOs
 * tests
 * coveralls badge
 * finish/extend command line interface
-* make anti-aliasing a dectorator
 * documentation
 * gif maker
 
@@ -22,3 +21,4 @@ Done
 
 * antialiasing for arcs and lines
 * web interface for viewing test images
+* make anti-aliasing a dectorator
