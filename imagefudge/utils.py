@@ -13,7 +13,7 @@ class FudgeUtils(object):
 
     Point = namedtuple('Point', ['x', 'y'])
 
-    def __init__(self, image, scale=2):
+    def __init__(self, image):
         """ Opens the image and scales it for antialiasing """
         try:
             self.image = Image.open(image)
@@ -25,24 +25,36 @@ class FudgeUtils(object):
             except AttributeError:
                 raise e
 
-        self.scale = scale
-        self.width = self.image.size[0]*self.scale
-        self.height = self.image.size[1]*self.scale
-        self.image = self.image.resize((self.width, self.height))
+        self.width = self.image.size[0]
+        self.height = self.image.size[1]
+
+    @staticmethod
+    def anti_alias(scale=2):
+        def anti_alias_dec(method):
+            """anti aliasing decortator"""
+            def antia(self, *args):
+                width = self.image.size[0]*scale
+                height = self.image.size[1]*scale
+                self.image = self.image.resize((width, height))
+                method(self, *args)
+                self.image = self.image.resize((width//scale,
+                                                height//scale),
+                                               Image.ANTIALIAS)
+            return antia
+        return anti_alias_dec
+
 
     def select_point(self):
         """ Returns a random point in the image """
-        return self.Point(int(random()*self.width),
-                          int(random()*self.height))
+        return self.Point(int(random()*self.image.size[0]),
+                          int(random()*self.image.size[1]))
 
     def get_center(self):
         """ Returns the center point of the image """
-        return self.Point(x=self.width/2, y=self.height/2)
+        return self.Point(x=self.image.size[0]/2, y=self.image.size[1]/2)
 
     def save(self, path):
         """ Scales the image back down with antialiasing and saves it """
-        self.image = self.image.resize((self.width//self.scale, self.height//self.scale),
-                                       Image.ANTIALIAS)
         self.image.save(path)
 
     def random_points(self, point_number):
