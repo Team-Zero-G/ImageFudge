@@ -44,6 +44,7 @@ class Fudged(FudgeUtils):
             endpoints = list(endpoints)
         if isinstance(origins, self.Point):
             origins = list(origins)
+        print(self.image.size)
 
         for count, origin in enumerate(origins):
             print('Origin #: {}'.format(count))
@@ -73,21 +74,19 @@ class Fudged(FudgeUtils):
 
 class FudgeMaker(Fudged):
     """ """
+    @FudgeUtils.anti_alias(scale=5)
     def fuzzy(self, magnitude):
-        #self.scale = 3
         point_number = int(magnitude)%10*10000
         origin_number = int(magnitude)%10*10+10
         print('Point Number: {}'.format(point_number))
         print('Origin Number: {}'.format(origin_number))
         random_endpoints = {x for x in self.random_points(point_number)}
-        self.draw_relative_arcs(self.random_points(origin_number),
-                                random_endpoints,
-                                {1,2})
+        self.draw_relative_arcs(self.random_points(origin_number), random_endpoints, {1,2})
 
 if __name__ == '__main__':
 
     img_path = 'htdocs/static/img/portland.jpg'
     save_path = 'htdocs/static/img/preview.jpg'
     fm = FudgeMaker(img_path)
-    fm.fuzzy(9)
+    fm.fuzzy(3)
     fm.save(save_path)
