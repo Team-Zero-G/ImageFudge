@@ -18,8 +18,8 @@ class Fudged(FudgeUtils):
     def draw_relative_arcs(self, origins, endpoints, arclen):
         """ Draws an arc of length arclen.
         INPUTS:
-            origins:   Iterable of Point Tuples OR Single Point named tuple
-            endpoints: Iterable of Point Tuples OR Single Point named tuple
+            origins:   Iterable of tuples (x,y) OR Single tuple (x,y)
+            endpoints: Iterable of tuples (x,y) OR Single tuple (x,y)
             arclen:    Iterable of length of at least 2 items containing
                        numeric values OR single numeric value
         OUTPUT:
