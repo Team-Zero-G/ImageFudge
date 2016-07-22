@@ -1,5 +1,6 @@
 .env/
 *.swp
+*.swo
 ImageFudge.egg-info/
 build/
 dist/
