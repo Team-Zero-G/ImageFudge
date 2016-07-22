@@ -74,7 +74,7 @@ class Fudged(FudgeUtils):
 class FudgeMaker(Fudged):
     """ """
     def fuzzy(self, magnitude):
-        self.scale = 3
+        #self.scale = 3
         point_number = int(magnitude)%10*10000
         origin_number = int(magnitude)%10*10+10
         print('Point Number: {}'.format(point_number))
