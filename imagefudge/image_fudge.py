@@ -85,8 +85,8 @@ class FudgeMaker(Fudged):
 
 if __name__ == '__main__':
 
-    img_path = 'htdocs/static/img/preview.jpg'
-    save_path = 'htdocs/static/img/portland.jpg'
+    img_path = 'htdocs/static/img/portland.jpg'
+    save_path = 'htdocs/static/img/preview.jpg'
     fm = FudgeMaker(img_path)
     fm.fuzzy(3)
     fm.save(save_path)
