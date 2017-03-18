@@ -20,12 +20,10 @@ class Fudged(FudgeUtils):
         INPUTS:
             origins:   Iterable of tuples (x,y) OR Single tuple (x,y)
             endpoints: Iterable of tuples (x,y) OR Single tuple (x,y)
-            arclen:    1) static numeric value
+            arclen:    1) static numeric value (or iterable of len 1)
                        2) Iterable vector (x,y) of for random range between x,y
-                       3) Iterable len
+                       3) Iterable with more than 2 items
 
-                        of items containing
-                       numeric values OR single numeric value
         OUTPUT:
             Edits Image object
 
