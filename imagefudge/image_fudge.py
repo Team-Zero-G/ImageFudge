@@ -48,6 +48,7 @@ class Fudged(FudgeUtils):
             origins = list(origins)
         print(self.image.size)
 
+        # Attempt to create arclen_itter if arclen itterable is greater than 3
         try:
             tmp_arclen_iter = arclen.__iter__()
             count_holder = -1
@@ -56,13 +57,13 @@ class Fudged(FudgeUtils):
                 if count is 2:
                     arclen_iter = arclen.__iter__()
                     break
-            if count_holder is 0:
+            if count_holder is 0: # If iter lenth 1 set arclen to iter value
                 tmp_arclen_iter = arclen.__iter__()
                 arclen = int(next(tmp_arclen_iter))
 
-        except AttributeError:
+        except AttributeError:  # Pass if arclen is not iterable
             pass
-        except ValueError as e:
+        except ValueError as e:  # raise if 1st item of iter len 1 is not numeric
             raise e(('arclen must be either a numeric value,'
                      'subscriptable range, or iterable'))
 
@@ -78,7 +79,6 @@ class Fudged(FudgeUtils):
                 except (TypeError, ValueError):
                     try:
                         end_angle = angle + int(next(arclen_iter))
-
                     except UnboundLocalError:
                         try:
                             arclen_iter = arclen.__iter__()
@@ -87,11 +87,9 @@ class Fudged(FudgeUtils):
                         except (TypeError, ValueError) as e:
                             raise e(('arclen must be either a numeric value,'
                                      'subscriptable range, or iterable'))
-
                     except StopIteration:
                         arclen_iter = arclen.__iter__()
                         end_angle = angle + int(next(arclen_iter))
-
                     except (TypeError, ValueError) as e:
                         raise e(('arclen must be either a numeric '
                                  'value, subscriptable range, or iterable'))
@@ -105,14 +103,15 @@ class FudgeMaker(Fudged):
     """ """
     @FudgeUtils.anti_alias(scale=5)
     def fuzzy(self, magnitude):
-        point_number = int(magnitude)%10*10000
-        origin_number = int(magnitude)%10*10+10
+        point_number = int(magnitude) % 10*10000
+        origin_number = int(magnitude) % 10*10+10
         print('Point Number: {}'.format(point_number))
         print('Origin Number: {}'.format(origin_number))
         random_endpoints = {x for x in self.random_points(point_number)}
-        print (random_endpoints)
+        print(random_endpoints)
         self.draw_relative_arcs(self.random_points(origin_number),
-                                random_endpoints, {1,2})
+                                random_endpoints, {1, 2})
+
     def test1(self):
         random_endpoints = {self.random_points(100) for x in range(100)}
         print(random_endpoints)
