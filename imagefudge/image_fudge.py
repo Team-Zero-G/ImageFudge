@@ -20,7 +20,11 @@ class Fudged(FudgeUtils):
         INPUTS:
             origins:   Iterable of tuples (x,y) OR Single tuple (x,y)
             endpoints: Iterable of tuples (x,y) OR Single tuple (x,y)
-            arclen:    Iterable of length of at least 2 items containing
+            arclen:    1) static numeric value
+                       2) Iterable vector (x,y) of for random range between x,y
+                       3) Iterable len
+
+                        of items containing
                        numeric values OR single numeric value
         OUTPUT:
             Edits Image object
@@ -46,6 +50,24 @@ class Fudged(FudgeUtils):
             origins = list(origins)
         print(self.image.size)
 
+        try:
+            tmp_arclen_iter = arclen.__iter__()
+            count_holder = -1
+            for count, _ in enumerate(tmp_arclen_iter):
+                count_holder = count
+                if count is 2:
+                    arclen_iter = arclen.__iter__()
+                    break
+            if count_holder is 0:
+                tmp_arclen_iter = arclen.__iter__()
+                arclen = int(next(tmp_arclen_iter))
+
+        except AttributeError:
+            pass
+        except ValueError as e:
+            raise e(('arclen must be either a numeric value,'
+                     'subscriptable range, or iterable'))
+
         for count, origin in enumerate(origins):
             print('Origin #: {}'.format(count))
             for endpoint in endpoints:
@@ -57,15 +79,24 @@ class Fudged(FudgeUtils):
                     end_angle = angle + int(arclen)
                 except (TypeError, ValueError):
                     try:
+                        end_angle = angle + int(next(arclen_iter))
+
+                    except UnboundLocalError:
+                        try:
+                            arclen_iter = arclen.__iter__()
+                            end_angle = angle + randrange(int(next(arclen_iter)),
+                                                          int(next(arclen_iter)))
+                        except (TypeError, ValueError) as e:
+                            raise e(('arclen must be either a numeric value,'
+                                     'subscriptable range, or iterable'))
+
+                    except StopIteration:
                         arclen_iter = arclen.__iter__()
-                        end_angle = angle + randrange(int(next(arclen_iter)),
-                                                      int(next(arclen_iter)))
-                    except (TypeError,
-                            ValueError,
-                            AttributeError,
-                            StopIteration) as e:
+                        end_angle = angle + int(next(arclen_iter))
+
+                    except (TypeError, ValueError) as e:
                         raise e(('arclen must be either a numeric '
-                                 'value or subscriptable range'))
+                                 'value, subscriptable range, or iterable'))
                 finally:
                     ImageDraw.Draw(self.image).arc(bounding_box,
                                                    angle,
@@ -81,12 +112,22 @@ class FudgeMaker(Fudged):
         print('Point Number: {}'.format(point_number))
         print('Origin Number: {}'.format(origin_number))
         random_endpoints = {x for x in self.random_points(point_number)}
-        self.draw_relative_arcs(self.random_points(origin_number), random_endpoints, {1,2})
+        print (random_endpoints)
+        self.draw_relative_arcs(self.random_points(origin_number),
+                                random_endpoints, {1,2})
+    def test1(self):
+        random_endpoints = {self.random_points(100) for x in range(100)}
+        print(random_endpoints)
+        self.draw_relative_arcs(self.random_points(100),
+                                self.random_points(100),
+                                range(20))
+
 
 if __name__ == '__main__':
 
     img_path = 'htdocs/static/img/portland.jpg'
-    save_path = 'htdocs/static/img/preview.jpg'
+    save_path = 'htdocs/static/img/preview1.jpg'
     fm = FudgeMaker(img_path)
-    fm.fuzzy(3)
+    #fm.fuzzy(3)
+    fm.test1()
     fm.save(save_path)
